@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8">
+<title>Stone &amp; Street</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A photo walk through old Ahmedabad by Satwik Singh.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Gujarati:wght@500&display=swap">
+<style>
+/* Layout: a single editorial column; the 3D ring is the hero stage, then three chapters of photographs, then craft notes. */
+:root {
+  --paper: #FFFFFF;       /* single white look, chosen on purpose */
+  --paper-2: #F3F4F2;
+  --ink: #1B1F2A;         /* kohl / indigo ink */
+  --muted: #5B6270;
+  --rule: #CDD2CE;
+  --accent: #1A7F98;      /* the turquoise of old pol doors */
+  --sand: #B98A45;        /* Ahmedabad sandstone */
+  --bar: #0F1116;
+  --bar-ink: #FFFFFF;
+  --btn: #FFFFFF;
+  --btn-ink: #0F1116;
+  --shade: rgba(15, 17, 22, .18);
+  --f-display: "Gloock", "Iowan Old Style", Georgia, serif;
+  --f-body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --f-guj: "Noto Serif Gujarati", "Gujarati Sangam MN", serif;
+}
+:root { color-scheme: light; }
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--f-body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.mono { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- masthead ---------- */
+.mast { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; padding-block: 22px 0; }
+.mast .who { font-weight: 600; letter-spacing: .01em; }
+.mast nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.mast nav a { text-decoration: none; }
+.mast nav a:hover { color: var(--accent); }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; padding-block: 56px 8px; }
+.hero h1 {
+  font-family: var(--f-display); font-weight: 400; margin: 0;
+  font-size: clamp(56px, 11vw, 148px); line-height: .9; letter-spacing: -.02em; text-wrap: balance;
+}
+.hero h1 .amp { color: var(--sand); }
+.hero .guj { font-family: var(--f-guj); font-size: clamp(26px, 4vw, 44px); color: var(--accent); line-height: 1.1; text-align: right; }
+.hero .guj small { display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.lede { max-width: 62ch; color: var(--muted); font-size: 18px; margin: 18px 0 0; }
+
+/* ---------- ring stage ---------- */
+.stage {
+  position: relative; width: 100%; height: clamp(440px, 62vw, 680px);
+  margin-top: 28px; overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none;
+  background:
+    radial-gradient(60% 50% at 50% 55%, var(--paper-2), transparent 70%),
+    var(--paper);
+  border-block: 1px solid var(--rule);
+}
+.stage.dragging { cursor: grabbing; }
+.ring { position: absolute; inset: 0; perspective: 900px; }
+.card {
+  position: absolute; left: 50%; top: 50%; margin: 0; will-change: transform, opacity;
+  pointer-events: none; transform-style: preserve-3d;
+}
+.card img { display: block; width: 100%; height: 100%; object-fit: cover; box-shadow: 0 10px 24px var(--shade); }
+.preview {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  z-index: 1500; display: flex; flex-direction: column;
+}
+.titlebar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--bar); color: var(--bar-ink); padding: 10px 12px 10px 14px;
+  font-size: 15px; font-weight: 500; letter-spacing: -.01em; line-height: 1.2;
+}
+.titlebar .t { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.titlebar .n { font-family: var(--f-mono); font-size: 11px; opacity: .6; margin-right: 10px; letter-spacing: .04em; }
+.btn {
+  appearance: none; border: 0; cursor: pointer; flex-shrink: 0; white-space: nowrap;
+  background: var(--btn); color: var(--btn-ink); padding: 6px 10px; font: 600 14px/1 var(--f-body); letter-spacing: -.01em;
+  transition: background .2s ease, color .2s ease;
+}
+.btn:hover { background: var(--accent); color: #fff; }
+.preview .frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--paper-2); cursor: zoom-in; box-shadow: 0 30px 70px var(--shade); }
+.preview .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .28s linear; }
+.preview .frame img.out { opacity: 0; }
+.stage-ui {
+  position: absolute; left: 0; right: 0; bottom: 14px; z-index: 1600;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  pointer-events: none;
+}
+.stage-ui > * { pointer-events: auto; }
+.arrows { display: flex; gap: 8px; }
+.arrow {
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--rule); background: var(--paper);
+  color: var(--ink); font-size: 18px; cursor: pointer; display: grid; place-items: center;
+}
+.arrow:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- chapters ---------- */
+section.chapter { padding-block: 88px 8px; }
+.ch-head { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; align-items: start; margin-bottom: 36px; }
+.ch-head .roman { font-family: var(--f-display); font-size: 64px; line-height: .9; color: var(--sand); }
+.ch-head h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; margin: 0 0 12px; text-wrap: balance; }
+.ch-head p { margin: 0; max-width: 60ch; color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px 18px; }
+figure.ph { margin: 0; min-width: 0; }
+figure.ph button { all: unset; display: block; width: 100%; cursor: zoom-in; overflow: hidden; background: var(--paper-2); }
+figure.ph button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+figure.ph img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+figure.ph button:hover img { transform: scale(1.025); }
+figure.ph figcaption { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; padding-top: 10px; font-size: 15px; line-height: 1.45; }
+figure.ph figcaption .num { font-family: var(--f-mono); font-size: 11px; color: var(--sand); padding-top: 3px; }
+figure.ph figcaption b { font-weight: 600; }
+figure.ph figcaption span.c { color: var(--muted); grid-column: 2; }
+.w6 { grid-column: span 6; } .w4 { grid-column: span 4; } .w3 { grid-column: span 3; } .w2 { grid-column: span 2; }
+.pull {
+  grid-column: span 2; align-self: center; font-family: var(--f-display); font-size: 26px; line-height: 1.2; margin: 0;
+  border-left: 2px solid var(--sand); padding-left: 16px; text-wrap: balance;
+}
+
+/* ---------- project: the digital jali ---------- */
+.project { margin-top: 96px; padding-block: 64px; border-block: 1px solid var(--ink); }
+.pj-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 32px; align-items: end; margin-bottom: 40px; }
+.pj-head h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(44px, 7.5vw, 96px); line-height: .92; margin: 8px 0 0; letter-spacing: -.02em; }
+.pj-head .sub { font-family: var(--f-display); font-size: clamp(20px, 2.4vw, 28px); color: var(--sand); margin-top: 10px; }
+.pj-meta { display: grid; grid-template-columns: auto auto; gap: 6px 18px; font-size: 14px; }
+.pj-meta dt { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.pj-meta dd { margin: 0; font-weight: 500; }
+.pj-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+
+/* the artifact: a stone lattice whose voids show a moving feed */
+.dj { position: relative; aspect-ratio: 4 / 5; max-width: 100%; background: var(--sand); padding: 14px; overflow: hidden; }
+.dj-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; height: 100%; }
+.dj-cell {
+  position: relative; overflow: hidden; background: #3B2A14;
+  border-radius: 50%; box-shadow: inset 0 0 0 5px #A9813F, inset 0 0 0 9px #8A6630;
+}
+.dj-cell:nth-child(3n) { border-radius: 50% 50% 6px 6px; }
+.dj-cell i {
+  position: absolute; inset: 9px; border-radius: inherit; background-size: 260% auto; background-repeat: repeat-y;
+  animation: feed var(--d, 7s) linear infinite; filter: saturate(1.4) contrast(1.05);
+}
+.dj-cell i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(255,255,255,.18)); mix-blend-mode: screen; }
+@keyframes feed { from { background-position: 50% 0; } to { background-position: 50% -400%; } }
+.dj-cap { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.dj-src { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.dj-src figure { margin: 0; }
+.dj-src img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.dj-src figcaption { font-size: 13px; color: var(--muted); padding-top: 6px; }
+
+.statement p { margin: 0 0 1em; max-width: 62ch; }
+.statement .q {
+  font-family: var(--f-display); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.18; margin: 28px 0 36px;
+  border-left: 2px solid var(--accent); padding-left: 18px; text-wrap: balance;
+}
+.statement h3 { font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+.statement .about { border-top: 1px solid var(--rule); padding-top: 24px; }
+@media (max-width: 820px) {
+  .pj-head, .pj-body { grid-template-columns: minmax(0, 1fr); }
+  .pj-body { gap: 32px; }
+  .project { margin-top: 72px; padding-block: 48px; }
+}
+@media (prefers-reduced-motion: reduce) { .dj-cell i { animation: none; } }
+
+/* ---------- craft notes ---------- */
+.craft { padding-block: 96px 24px; }
+.craft h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(32px, 4.4vw, 52px); margin: 0 0 8px; }
+.craft > .wrap > p { color: var(--muted); max-width: 60ch; margin: 0 0 36px; }
+.notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+.note { padding: 22px 24px 26px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 18px; }
+.note:nth-child(odd) { border-right: 1px solid var(--rule); }
+.note:nth-child(even) { padding-left: 24px; }
+.note h3 { margin: 0; font-size: 19px; font-weight: 600; }
+.note p { margin: 0; color: var(--muted); grid-column: 1 / -1; max-width: 52ch; }
+.note .refs { display: flex; gap: 6px; }
+.note .refs button {
+  width: 46px; height: 26px; padding: 0; border: 0; cursor: zoom-in; background-size: cover; background-position: center;
+}
+.spec { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 40px; }
+.spec div { display: flex; flex-direction: column; }
+.spec b { font-weight: 500; }
+
+footer { padding-block: 56px 48px; border-top: 1px solid var(--rule); margin-top: 72px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* ---------- lightbox ---------- */
+dialog.lb { border: 0; padding: 0; max-width: none; max-height: none; width: 100%; height: 100%; background: rgba(8, 9, 12, .94); color: #F2EFE8; }
+dialog.lb::backdrop { background: transparent; }
+.lb-inner {
+  height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 14px;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.lb-top { display: flex; justify-content: space-between; align-items: center; font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; color: #A9AEB6; }
+.lb-img { min-height: 0; display: grid; place-items: center; }
+.lb-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.lb-bot { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.lb-bot .cap { max-width: 70ch; }
+.lb-bot .cap b { font-family: var(--f-display); font-weight: 400; font-size: 24px; display: block; }
+.lb-bot .cap span { color: #A9AEB6; }
+.lb button { background: transparent; color: #F2EFE8; border: 1px solid #3A3F48; height: 40px; min-width: 40px; padding: 0 12px; cursor: pointer; font: 500 14px var(--f-body); }
+.lb button:hover { border-color: #F2EFE8; }
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 36px 0; }
+  .hero .guj { text-align: left; }
+  .ch-head { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .ch-head .roman { font-size: 44px; }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .w6, .w4, .w3, .w2, .pull { grid-column: auto; }
+  .notes { grid-template-columns: minmax(0, 1fr); }
+  .note, .note:nth-child(even) { padding-left: 0; padding-right: 0; border-right: 0; }
+  .titlebar { font-size: 14px; }
+  .mast nav { gap: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="mast">
+    <span class="who">Satwik Singh</span>
+    <nav class="mono">
+      <a href="#stone">Stone</a><a href="#digital-jali">Digital Jali</a><a href="#pillars">Pillars</a><a href="#street">Street</a><a href="#craft">Craft notes</a>
+    </nav>
+  </div>
+  <div class="hero">
+    <h1>Stone <span class="amp">&amp;</span><br>Street</h1>
+    <div class="guj" lang="gu">અમદાવાદ<small>Ahmedabad · 14 frames</small></div>
+  </div>
+  <p class="lede">One walk through Ahmedabad, from the quiet stone courts of its old tombs and mosques into the pols and bazaars that still crowd around them. Drag the ring to look around, or open any frame full size.</p>
+</header>
+
+<div class="stage" id="stage" role="region" aria-roledescription="carousel" aria-label="Photographs on a rotating ring">
+  <div class="ring" id="ring"></div>
+  <div class="preview" id="preview">
+    <div class="titlebar">
+      <span class="t"><span class="n" id="pvNum">01/14</span><span id="pvTitle"></span></span>
+      <button class="btn" id="pvOpen" type="button">View frame</button>
+    </div>
+    <div class="frame" id="pvFrame" role="button" tabindex="0" aria-label="Open this frame full size">
+      <img id="pvA" alt="">
+      <img id="pvB" alt="" class="out">
+    </div>
+  </div>
+  <div class="stage-ui">
+    <span class="mono">Drag · Scroll · ← →</span>
+    <div class="arrows">
+      <button class="arrow" id="prev" type="button" aria-label="Previous frame">←</button>
+      <button class="arrow" id="next" type="button" aria-label="Next frame">→</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" id="chapters"></main>
+
+<section class="project" id="digital-jali" aria-labelledby="dj-title">
+  <div class="pj-head">
+    <div>
+      <span class="mono">Featured project · Sarkhej Roza</span>
+      <h2 id="dj-title">The Digital Jali</h2>
+      <div class="sub">Jaalis of Sarkhej Roza</div>
+    </div>
+    <dl class="pj-meta">
+      <dt>Site</dt><dd>Sarkhej Roza, Ahmedabad</dd>
+      <dt>Concept</dt><dd>Mediated reality</dd>
+      <dt>Artifact</dt><dd>Video collage</dd>
+      <dt>Lens</dt><dd>Popular culture</dd>
+    </dl>
+  </div>
+  <div class="pj-body">
+    <div>
+      <div class="dj" id="dj" role="img" aria-label="Illustration of the idea: a carved stone lattice whose openings show a constantly scrolling feed of images instead of the view outside">
+        <div class="dj-grid" id="djGrid"></div>
+      </div>
+      <div class="dj-cap mono"><span>Stone frame, digital view</span><span>Concept sketch</span></div>
+      <div class="dj-src">
+        <figure><img src="img/full/06.jpg" alt="Carved rosette jaali screens along a colonnade at Sarkhej Roza" loading="lazy"><figcaption>The jaali: carved sandstone that filters light and view.</figcaption></figure>
+        <figure><img src="img/full/13.jpg" alt="A walker photographing the street on her phone" loading="lazy"><figcaption>The screen: the frame we now carry in our hands.</figcaption></figure>
+      </div>
+    </div>
+    <div class="statement">
+      <p>For centuries, the carved stone Jaalis of Sarkhej Roza allowed us to observe the world unseen, elegantly filtering the harsh sun and framing reality through perfect geometry. Today, our view has shifted from these ancient stone voids to glowing digital screens. The smartphone has become our modern Jaali, mediating the chaotic flow of pop culture and curating our everyday lives.</p>
+      <p>Just as historical architects used stone screens to control what entered a physical space, today’s invisible algorithms use digital screens to control our mediated reality. Where the sultans once sought a quiet refuge from the city, we now carry the relentless noise of the global bazaar in our pockets. The permanence of carved sandstone has been replaced by the fleeting, ephemeral glow of viral trends and endless notifications.</p>
+      <p>We scroll through these feeds feeling connected to the masses, yet we sit physically isolated behind our own private screens. We are no longer just the silent observers hidden behind the lattice. We are simultaneously the performers trapped within the digital grid. As we gaze through these fragmented pixels, we must ask ourselves: do these new windows expand our world, or simply build a tighter cage?</p>
+      <p class="q">What is your modern Jaali filtering out?</p>
+      <div class="about">
+        <h3>About the project</h3>
+        <p>“The Digital Jali” explores the popular culture concept of mediated reality by comparing the ancient stone lattice windows (Jaalis) of Sarkhej Roza to the modern smartphone screen. Historically, these carved stone screens acted as physical filters that managed the harsh sun and allowed those inside to safely observe the outside world unseen, strictly framing their view of reality.</p>
+        <p>For my creative artifact, I designed a video collage that visually replaces the historical view through these ancient stone voids with fast-paced, chaotic modern smartphone content, such as social media feeds and pop culture videos. By forcing modern digital life into this rigid, historical architectural framework, the artifact makes the invisible filter of our phones visible.</p>
+        <p>It provokes the audience to realize that just as historical architects designed stone to control what was seen, today’s digital algorithms curate our feeds, leaving us to reflect on what our modern screens are filtering out of our daily lives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="craft" id="craft">
+  <div class="wrap">
+    <span class="mono">Craft notes</span>
+    <h2>What I was looking for</h2>
+    <p>The walk was about seeing the old city whole: the monuments and the people who live and work around them. These are the four ideas I kept coming back to while shooting and editing.</p>
+    <div class="notes" id="notes"></div>
+    <div class="spec mono">
+      <div>Location<b>Old Ahmedabad, Gujarat</b></div>
+      <div>Edit<b>Adobe Lightroom</b></div>
+      <div>Frames<b>14, 16:9</b></div>
+      <div>Ring<b>Custom 3D carousel, own build</b></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap mono">
+    <span>© 2026 Satwik Singh</span>
+    <span>All photographs by the author</span>
+  </div>
+</footer>
+
+<dialog class="lb" id="lb" aria-label="Photograph viewer">
+  <div class="lb-inner">
+    <div class="lb-top"><span id="lbNum"></span><button type="button" id="lbClose">Close ✕</button></div>
+    <div class="lb-img"><img id="lbImg" alt=""></div>
+    <div class="lb-bot">
+      <div class="cap"><b id="lbTitle"></b><span id="lbCap"></span></div>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="lbPrev" aria-label="Previous photograph">←</button>
+        <button type="button" id="lbNext" aria-label="Next photograph">→</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  // file = image number; order of this array is the order of the walk
+  const PHOTOS = [
+    { file: "01", ch: 0, title: "The jaali house", cap: "A tomb wrapped on every side in carved stone screens, so the inside is lit only through the pattern." },
+    { file: "07", ch: 0, title: "Before the pavilion", cap: "Two pillars of the colonnade frame the open pavilion; the dupatta is the only thing moving." },
+    { file: "06", ch: 0, title: "Corridor of screens", cap: "Rosettes in the jaali on the right, pillars marching away on the left, one man crossing at the vanishing point." },
+    { file: "03", ch: 0, title: "Red at the end of the hall", cap: "A forest of white pillars, and one figure in red passing the lit doorway." },
+    { file: "04", ch: 0, title: "Two in a window", cap: "Friends on a stone ledge over the lake: a frame inside a frame inside a frame." },
+    { file: "10", ch: 1, title: "Waiting in the colonnade", cap: "Dark basalt pillars carry the eye straight to a single person at the end of the arcade." },
+    { file: "05", ch: 1, title: "Ink on old stone", cap: "Fresh black calligraphy against six centuries of weathered sandstone." },
+    { file: "09", ch: 1, title: "Chadars and squirrels", cap: "Graves dressed in bright cloth, pigeons on the roofline, squirrels working the courtyard floor." },
+    { file: "02", ch: 1, title: "A wall that keeps time", cap: "Carved window after carved window, and at the far end a tin roof and a modern sign." },
+    { file: "08", ch: 2, title: "Trade under the arch", cap: "Padlocks, rubber feet and Vimal bags laid out at the foot of an old city gate." },
+    { file: "11", ch: 2, title: "The rafoogar’s step", cap: "Two darners at work in a shop barely wider than they are, between garlands and stationery." },
+    { file: "12", ch: 2, title: "Looking up", cap: "On the market stairs everyone is carrying, climbing or counting. One boy stops to look up." },
+    { file: "13", ch: 2, title: "The photographer, photographed", cap: "A fellow walker framing her own shot against a turquoise pol door and two electricity meters." },
+    { file: "14", ch: 2, title: "Pol at golden hour", cap: "Banners, signboards and scooters in a pol lane as the evening light comes in from the far end." },
+  ];
+  const CHAPTERS = [
+    { id: "stone", roman: "I", title: "Light through stone", text: "At Sarkhej Roza the stone does the work. Carved jaali screens break the sun into patterns, and long rows of pillars turn a single visitor into a sense of scale." },
+    { id: "pillars", roman: "II", title: "Pillars that stayed", text: "The older courtyards are not museum pieces. They are still in use, still patched and painted, still visited, and that layering of centuries is what I wanted to keep in frame." },
+    { id: "street", roman: "III", title: "The city that kept moving", text: "Step out of the gates and the old city is loud, crowded and commercial. The same arches and stone walls now hold up shops, stairs and signboards in Gujarati." },
+  ];
+  // per-chapter grid layout: [photo index, span class] plus an optional pull quote
+  const LAYOUT = [
+    [[0, "w6"], [3, "w4"], ["pull", "Every pattern in the stone is also a window."], [1, "w3"], [2, "w3"], [4, "w6"]],
+    [[5, "w6"], [6, "w3"], [7, "w3"], [8, "w4"], ["pull", "Old walls, new signs, same courtyard."]],
+    [[9, "w6"], [10, "w3"], [11, "w3"], [12, "w4"], ["pull", "Colour is how the street talks back."], [13, "w6"]],
+  ];
+  const NOTES = [
+    { h: "Frames within frames", p: "Doorways, pillars and windows used as a second border, so the architecture sets up the photograph before the subject arrives.", refs: [4, 1, 3] },
+    { h: "People for scale", p: "A single small figure deep in a colonnade tells you how big and how quiet the space is better than an empty frame can.", refs: [3, 2, 5] },
+    { h: "Colour as punctuation", p: "In a palette of sandstone and lime-wash, one red kurta, one magenta dress or one turquoise door is enough to lead the eye.", refs: [3, 11, 12] },
+    { h: "Layers of time", p: "Old carving next to a tin roof, a calligraphy mural, a printed banner. The city keeps adding to itself, and I tried to show both at once.", refs: [8, 6, 9] },
+  ];
+  const full = (p) => `img/full/${p.file}.jpg`;
+  const thumb = (p) => `img/thumb/${p.file}.jpg`;
+  const pad = (n) => String(n).padStart(2, "0");
+  const N = PHOTOS.length;
+
+  // ---------- chapters ----------
+  const chaptersEl = document.getElementById("chapters");
+  CHAPTERS.forEach((c, ci) => {
+    const sec = document.createElement("section");
+    sec.className = "chapter"; sec.id = c.id;
+    sec.innerHTML = `<div class="ch-head"><div class="roman">${c.roman}</div><div><h2>${c.title}</h2><p>${c.text}</p></div></div><div class="grid"></div>`;
+    const grid = sec.querySelector(".grid");
+    LAYOUT[ci].forEach(([what, cls]) => {
+      if (what === "pull") {
+        const q = document.createElement("p"); q.className = "pull"; q.textContent = cls; grid.appendChild(q); return;
+      }
+      const p = PHOTOS[what];
+      const fig = document.createElement("figure");
+      fig.className = "ph " + cls;
+      fig.innerHTML = `<button type="button" aria-label="Open ${p.title}"><img loading="lazy" src="${full(p)}" alt="${p.cap}"></button>
+        <figcaption><span class="num">${pad(what + 1)}</span><b>${p.title}</b><span class="c">${p.cap}</span></figcaption>`;
+      fig.querySelector("button").addEventListener("click", () => openLb(what));
+      grid.appendChild(fig);
+    });
+    chaptersEl.appendChild(sec);
+    if (ci === 0) chaptersEl.appendChild(document.getElementById("digital-jali"));
+  });
+
+  // digital jali: each stone void plays a different "feed" of the walk's photographs
+  const djGrid = document.getElementById("djGrid");
+  for (let c = 0; c < 20; c++) {
+    const cell = document.createElement("div"); cell.className = "dj-cell";
+    const i = document.createElement("i");
+    i.style.backgroundImage = `url(img/thumb/${PHOTOS[(c * 5) % N].file}.jpg)`;
+    i.style.setProperty("--d", (5 + (c * 7) % 9) + "s");
+    i.style.animationDelay = (-(c * 1.3)) + "s";
+    if (c % 2) i.style.animationDirection = "reverse";
+    cell.appendChild(i); djGrid.appendChild(cell);
+  }
+
+  const notesEl = document.getElementById("notes");
+  NOTES.forEach((n) => {
+    const d = document.createElement("div"); d.className = "note";
+    d.innerHTML = `<h3>${n.h}</h3><div class="refs"></div><p>${n.p}</p>`;
+    const refs = d.querySelector(".refs");
+    n.refs.forEach((i) => {
+      const b = document.createElement("button"); b.type = "button";
+      b.style.backgroundImage = `url(${thumb(PHOTOS[i])})`;
+      b.setAttribute("aria-label", "Open " + PHOTOS[i].title);
+      b.addEventListener("click", () => openLb(i));
+      refs.appendChild(b);
+    });
+    notesEl.appendChild(d);
+  });
+
+  // ---------- lightbox ----------
+  const lb = document.getElementById("lb");
+  let lbIndex = 0;
+  function showLb(i) {
+    lbIndex = (i + N) % N; const p = PHOTOS[lbIndex];
+    document.getElementById("lbImg").src = full(p);
+    document.getElementById("lbImg").alt = p.cap;
+    document.getElementById("lbNum").textContent = `${pad(lbIndex + 1)} / ${N} · ${CHAPTERS[p.ch].title}`;
+    document.getElementById("lbTitle").textContent = p.title;
+    document.getElementById("lbCap").textContent = p.cap;
+  }
+  function openLb(i) { showLb(i); if (!lb.open) lb.showModal(); }
+  document.getElementById("lbClose").onclick = () => lb.close();
+  document.getElementById("lbPrev").onclick = () => showLb(lbIndex - 1);
+  document.getElementById("lbNext").onclick = () => showLb(lbIndex + 1);
+  lb.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") showLb(lbIndex - 1);
+    if (e.key === "ArrowRight") showLb(lbIndex + 1);
+  });
+  lb.addEventListener("click", (e) => { if (e.target.classList.contains("lb-img") || e.target === lb) lb.close(); });
+
+  // ---------- ring carousel (port of the RingCarousel Framer component) ----------
+  const stage = document.getElementById("stage");
+  const ring = document.getElementById("ring");
+  const preview = document.getElementById("preview");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STEP = 360 / N;
+  const cards = PHOTOS.map((p) => {
+    const el = document.createElement("figure"); el.className = "card";
+    el.innerHTML = `<img src="${thumb(p)}" alt="" draggable="false">`;
+    ring.appendChild(el); return el;
+  });
+
+  let geo = {};
+  function measure() {
+    const w = stage.clientWidth, h = stage.clientHeight, mobile = w < 760;
+    const pvW = mobile ? Math.min(w * 0.86, 560) : Math.min(w * 0.5, 600);
+    geo = {
+      radius: mobile ? w * 0.52 : Math.min(w * 0.44, 560),
+      ellipse: mobile ? h * 0.42 : h * 0.44,
+      itemW: mobile ? 92 : Math.min(176, w * 0.14),
+      pvW, pvH: pvW * 9 / 16 + 40,
+      frontScale: 1, sideScale: 0.42, minOpacity: 0.55, faceAmount: 0.55,
+    };
+    preview.style.width = pvW + "px";
+    cards.forEach((c) => { c.style.width = geo.itemW + "px"; c.style.height = (geo.itemW * 9 / 16) + "px"; });
+  }
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const norm = (a) => { let n = ((((a + 180) % 360) + 360) % 360) - 180; return n === -180 ? 180 : n; };
+
+  let rotation = 0, velocity = 0, target = null, dragging = false, interacted = false;
+  let tiltX = 0, tiltY = 0, tx = 0, ty = 0, active = -1, lastT = performance.now(), inView = true;
+
+  function render() {
+    const handoff = STEP * 0.95;
+    cards.forEach((el, i) => {
+      const a = norm(i * STEP + rotation), rad = a * Math.PI / 180;
+      const z = Math.cos(rad), front = clamp((z + 1) / 2, 0, 1);
+      const x = Math.sin(rad) * geo.radius + tiltX * 40 * (0.35 + 0.65 * front);
+      const y = z * geo.ellipse * 0.5 + tiltY * 50 * (0.35 + 0.65 * front);
+      const pf = Math.max(1.1, 900 / 220), raw = pf / (pf - z), lo = pf / (pf + 1), hi = pf / (pf - 1);
+      const s = geo.sideScale + (geo.frontScale - geo.sideScale) * clamp((raw - lo) / (hi - lo), 0, 1);
+      const yaw = Math.sin(rad) * 55 * (1 - geo.faceAmount * Math.pow(front, 2.5)) + tiltX * 10;
+      const d = Math.abs(a);
+      const hand = Math.pow(clamp(d / handoff, 0, 1), 0.85);
+      const op = (geo.minOpacity + (1 - geo.minOpacity) * front) * hand;
+      el.style.transform = `translate(-50%, -50%) translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotateX(${(-tiltY * 14 * (0.15 + 0.55 * front)).toFixed(2)}deg) rotateY(${yaw.toFixed(2)}deg) scale(${s.toFixed(3)})`;
+      el.style.opacity = op.toFixed(3);
+      el.style.zIndex = z > 0 ? 2000 + Math.round(z * 100) : Math.round((z + 1) * 1000);
+    });
+    let best = 0, bd = 999;
+    for (let i = 0; i < N; i++) { const d = Math.abs(norm(i * STEP + rotation)); if (d < bd) { bd = d; best = i; } }
+    if (best !== active) setActive(best);
+  }
+
+  const pvA = document.getElementById("pvA"), pvB = document.getElementById("pvB");
+  let pvFront = pvA;
+  function setActive(i) {
+    active = i; const p = PHOTOS[i];
+    document.getElementById("pvTitle").textContent = p.title;
+    document.getElementById("pvNum").textContent = `${pad(i + 1)}/${N}`;
+    const back = pvFront === pvA ? pvB : pvA;
+    back.src = full(p); back.alt = p.cap;
+    back.classList.remove("out"); pvFront.classList.add("out"); pvFront = back;
+    stage.setAttribute("aria-label", `Photograph ${i + 1} of ${N}: ${p.title}`);
+  }
+
+  function goTo(i) {
+    // shortest path to put item i at the front
+    const want = -i * STEP; target = rotation + norm(want - rotation); velocity = 0; interacted = true;
+  }
+  const step = (dir) => goTo((active + dir + N) % N);
+
+  function tick(now) {
+    const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+    if (!dragging) {
+      if (target !== null) {
+        const diff = target - rotation; rotation += diff * (1 - Math.exp(-dt * 9));
+        if (Math.abs(diff) < 0.02) { rotation = target; target = null; }
+      } else if (Math.abs(velocity) > 0.5) {
+        rotation += velocity * dt; velocity *= Math.exp(-dt * 2.6);
+        if (Math.abs(velocity) < 14) { target = Math.round(rotation / STEP) * STEP; velocity = 0; }
+      } else if (!interacted && !reduce && inView) {
+        rotation -= 7 * dt;
+      }
+    }
+    tiltX += (tx - tiltX) * (1 - Math.exp(-dt * 6));
+    tiltY += (ty - tiltY) * (1 - Math.exp(-dt * 6));
+    render();
+    requestAnimationFrame(tick);
+  }
+
+  let px = 0, py = 0, lastX = 0, lastMove = 0, moved = 0, pid = -1, samples = [];
+  stage.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("button")) return;
+    pid = e.pointerId; px = lastX = e.clientX; py = e.clientY; lastMove = performance.now(); moved = 0; samples = [];
+    dragging = true; target = null; velocity = 0; interacted = true; stage.classList.add("dragging");
+  });
+  stage.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "mouse") {
+      const r = stage.getBoundingClientRect();
+      tx = clamp(((e.clientX - r.left) / r.width) * 2 - 1, -1, 1);
+      ty = clamp(((e.clientY - r.top) / r.height) * 2 - 1, -1, 1);
+    }
+    if (!dragging || e.pointerId !== pid) return;
+    const now = performance.now(), dx = e.clientX - lastX;
+    moved = Math.max(moved, Math.hypot(e.clientX - px, e.clientY - py));
+    if (moved > 6 && !stage.hasPointerCapture(pid)) stage.setPointerCapture(pid);
+    const deg = dx * 0.3; rotation += deg;
+    samples.push({ t: now, v: deg / Math.max(1, now - lastMove) * 1000 });
+    samples = samples.filter((s) => now - s.t < 120);
+    lastX = e.clientX; lastMove = now;
+  });
+  const end = (e) => {
+    if (!dragging || e.pointerId !== pid) return;
+    dragging = false; stage.classList.remove("dragging");
+    if (stage.hasPointerCapture(pid)) stage.releasePointerCapture(pid);
+    velocity = samples.length ? samples.reduce((a, s) => a + s.v, 0) / samples.length : 0;
+    if (Math.abs(velocity) < 14) { velocity = 0; target = Math.round(rotation / STEP) * STEP; }
+    if (moved < 6 && e.target.closest("#pvFrame")) openLb(active);
+  };
+  stage.addEventListener("pointerup", end);
+  stage.addEventListener("pointercancel", end);
+  stage.addEventListener("pointerleave", () => { tx = 0; ty = 0; });
+  stage.addEventListener("wheel", (e) => {
+    const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : 0;
+    if (!d) return; // leave vertical scrolling to the page
+    e.preventDefault(); interacted = true; target = null; velocity += -d * 2.2;
+  }, { passive: false });
+  document.getElementById("prev").onclick = () => step(-1);
+  document.getElementById("next").onclick = () => step(1);
+  document.getElementById("pvOpen").onclick = () => openLb(active);
+  const pvFrame = document.getElementById("pvFrame");
+  pvFrame.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLb(active); } });
+  stage.tabIndex = 0;
+  stage.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
+  });
+  if ("IntersectionObserver" in window) new IntersectionObserver(([en]) => { inView = en.isIntersecting; }).observe(stage);
+  addEventListener("resize", measure);
+
+  measure(); render(); requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
